@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>구글 기프트카드 코드 생성기</title>
+    <style>
+        body {
+            background-color: #121212;
+            color: #ffffff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            background-color: #1e1e1e;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+            text-align: center;
+            width: 80%;
+            max-width: 400px;
+        }
+
+        h2 {
+            color: #34a853; /* 구글 초록색 */
+            margin-bottom: 25px;
+        }
+
+        #code-display {
+            background-color: #2d2d2d;
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 20px;
+            font-weight: bold;
+            letter-spacing: 2px;
+            color: #fbbc05; /* 구글 노란색 */
+            margin-bottom: 25px;
+            word-wrap: break-word;
+            min-height: 24px; /* 값이 없을 때 높이 유지 */
+        }
+
+        button {
+            background-color: #4285f4; /* 구글 파란색 */
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            width: 100%;
+        }
+
+        button:hover {
+            background-color: #357ae8;
+        }
+
+        .copy-btn {
+            background-color: #5f6368;
+            margin-top: 10px;
+        }
+
+        .copy-btn:hover {
+            background-color: #4a4e52;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Gift Card Generator</h2>
+        <div id="code-display">버튼을 눌러 생성</div>
+        <button onclick="generateCode()">코드 생성</button>
+        <button class="copy-btn" onclick="copyCode()">코드 복사</button>
+    </div>
+
+    <script>
+        // 코드를 생성하는 함수
+        function generateCode() {
+            const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+            let code = '';
+            
+            for (let i = 0; i < 4; i++) { // 4묶음
+                let chunk = '';
+                for (let j = 0; j < 4; j++) { // 각 묶음당 4자리
+                    const randomIndex = Math.floor(Math.random() * characters.length);
+                    chunk += characters.charAt(randomIndex);
+                }
+                code += chunk;
+                if (i < 3) code += '-'; // 마지막 묶음 뒤에는 하이픈 제외
+            }
+            
+            document.getElementById('code-display').innerText = code;
+        }
+
+        // 코드를 클립보드에 복사하는 함수
+        function copyCode() {
+            const codeDisplay = document.getElementById('code-display');
+            const codeText = codeDisplay.innerText;
+            
+            if (codeText === '버튼을 눌러 생성' || codeText === '') {
+                alert('먼저 코드를 생성해주세요.');
+                return;
+            }
+
+            navigator.clipboard.writeText(codeText).then(() => {
+                alert('코드가 복사되었습니다: ' + codeText);
+            }).catch(err => {
+                console.error('복사 실패:', err);
+                alert('복사에 실패했습니다.');
+            });
+        }
+    </script>
+</body>
+</html>
